@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Crear Cliente</title>
+<style>
+  :root {
+    --azul: #1E3A5F;
+    --azul-claro: #2E5A8F;
+    --fondo: #F5F7FA;
+    --texto: #1A2233;
+    --gris: #6B7280;
+    --borde: #D7DCE3;
+    --error: #C0392B;
+    --exito: #1F8A57;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: var(--fondo);
+    color: var(--texto);
+    display: flex;
+    justify-content: center;
+    padding: 40px 16px;
+  }
+
+  .tarjeta {
+    background: #FFFFFF;
+    width: 100%;
+    max-width: 560px;
+    border-radius: 10px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08), 0 8px 24px rgba(0,0,0,0.06);
+    overflow: hidden;
+  }
+
+  .encabezado {
+    background: var(--azul);
+    color: white;
+    padding: 24px 32px;
+  }
+
+  .encabezado h1 {
+    margin: 0;
+    font-size: 22px;
+    font-weight: 600;
+  }
+
+  .encabezado p {
+    margin: 4px 0 0;
+    font-size: 14px;
+    color: #C7D5E5;
+  }
+
+  form {
+    padding: 32px;
+    display: grid;
+    gap: 18px;
+  }
+
+  .campo {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .fila-doble {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+  }
+
+  label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--gris);
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+
+  input, select {
+    padding: 10px 12px;
+    border: 1px solid var(--borde);
+    border-radius: 6px;
+    font-size: 15px;
+    color: var(--texto);
+    background: #FCFCFD;
+    outline: none;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  input:focus, select:focus {
+    border-color: var(--azul-claro);
+    box-shadow: 0 0 0 3px rgba(46, 90, 143, 0.15);
+  }
+
+  input.invalido {
+    border-color: var(--error);
+  }
+
+  .mensaje-error {
+    font-size: 12px;
+    color: var(--error);
+    min-height: 14px;
+  }
+
+  .acciones {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 8px;
+  }
+
+  button {
+    padding: 11px 22px;
+    border-radius: 6px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+  }
+
+  .btn-cancelar {
+    background: white;
+    color: var(--gris);
+    border: 1px solid var(--borde);
+  }
+
+  .btn-cancelar:hover { background: #F3F4F6; }
+
+  .btn-guardar {
+    background: var(--azul);
+    color: white;
+  }
+
+  .btn-guardar:hover { background: var(--azul-claro); }
+
+  .aviso-exito {
+    display: none;
+    margin: 0 32px 24px;
+    padding: 12px 16px;
+    background: #E7F6EE;
+    border: 1px solid var(--exito);
+    color: var(--exito);
+    border-radius: 6px;
+    font-size: 14px;
+  }
+
+  .aviso-exito.visible { display: block; }
+
+  @media (max-width: 480px) {
+    .fila-doble { grid-template-columns: 1fr; }
+    .encabezado, form { padding-left: 20px; padding-right: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="tarjeta">
+  <div class="encabezado">
+    <h1>Crear cliente</h1>
+    <p>Completa los datos para registrar un nuevo cliente</p>
+  </div>
+
+  <div class="aviso-exito" id="avisoExito">Cliente guardado correctamente.</div>
+
+  <form id="formCliente" novalidate>
+
+    <div class="fila-doble">
+      <div class="campo">
+        <label for="nombre">Nombre</label>
+        <input type="text" id="nombre" name="nombre" placeholder="Ej. María">
+        <span class="mensaje-error" id="errorNombre"></span>
+      </div>
+      <div class="campo">
+        <label for="apellido">Apellido</label>
+        <input type="text" id="apellido" name="apellido" placeholder="Ej. Gómez">
+        <span class="mensaje-error" id="errorApellido"></span>
+      </div>
+    </div>
+
+    <div class="campo">
+      <label for="email">Correo electrónico</label>
+      <input type="email" id="email" name="email" placeholder="cliente@correo.com">
+      <span class="mensaje-error" id="errorEmail"></span>
+    </div>
+
+    <div class="fila-doble">
+      <div class="campo">
+        <label for="telefono">Teléfono</label>
+        <input type="tel" id="telefono" name="telefono" placeholder="Ej. 6000-0000">
+        <span class="mensaje-error" id="errorTelefono"></span>
+      </div>
+      <div class="campo">
+        <label for="tipoCliente">Tipo de cliente</label>
+        <select id="tipoCliente" name="tipoCliente">
+          <option value="natural">Persona natural</option>
+          <option value="juridico">Persona jurídica</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="campo">
+      <label for="direccion">Dirección</label>
+      <input type="text" id="direccion" name="direccion" placeholder="Calle, ciudad">
+      <span class="mensaje-error" id="errorDireccion"></span>
+    </div>
+
+    <div class="acciones">
+      <button type="button" class="btn-cancelar" id="btnCancelar">Cancelar</button>
+      <button type="submit" class="btn-guardar">Guardar cliente</button>
+    </div>
+  </form>
+</div>
+
+<script>
+  const form = document.getElementById('formCliente');
+  const avisoExito = document.getElementById('avisoExito');
+
+  function marcarError(inputId, mensajeId, texto) {
+    document.getElementById(inputId).classList.add('invalido');
+    document.getElementById(mensajeId).textContent = texto;
+  }
+
+  function limpiarError(inputId, mensajeId) {
+    document.getElementById(inputId).classList.remove('invalido');
+    document.getElementById(mensajeId).textContent = '';
+  }
+
+  function validarFormulario() {
+    let esValido = true;
+
+    const nombre = document.getElementById('nombre').value.trim();
+    const apellido = document.getElementById('apellido').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const telefono = document.getElementById('telefono').value.trim();
+    const direccion = document.getElementById('direccion').value.trim();
+
+    limpiarError('nombre', 'errorNombre');
+    limpiarError('apellido', 'errorApellido');
+    limpiarError('email', 'errorEmail');
+    limpiarError('telefono', 'errorTelefono');
+    limpiarError('direccion', 'errorDireccion');
+
+    if (nombre === '') {
+      marcarError('nombre', 'errorNombre', 'El nombre es obligatorio.');
+      esValido = false;
+    }
+
+    if (apellido === '') {
+      marcarError('apellido', 'errorApellido', 'El apellido es obligatorio.');
+      esValido = false;
+    }
+
+    const patronEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (email === '') {
+      marcarError('email', 'errorEmail', 'El correo es obligatorio.');
+      esValido = false;
+    } else if (!patronEmail.test(email)) {
+      marcarError('email', 'errorEmail', 'Ingresa un correo válido.');
+      esValido = false;
+    }
+
+    if (telefono === '') {
+      marcarError('telefono', 'errorTelefono', 'El teléfono es obligatorio.');
+      esValido = false;
+    }
+
+    if (direccion === '') {
+      marcarError('direccion', 'errorDireccion', 'La dirección es obligatoria.');
+      esValido = false;
+    }
+
+    return esValido;
+  }
+
+  form.addEventListener('submit', function (evento) {
+    evento.preventDefault();
+    avisoExito.classList.remove('visible');
+
+    if (!validarFormulario()) {
+      return;
+    }
+
+    const cliente = {
+      nombre: document.getElementById('nombre').value.trim(),
+      apellido: document.getElementById('apellido').value.trim(),
+      email: document.getElementById('email').value.trim(),
+      telefono: document.getElementById('telefono').value.trim(),
+      tipoCliente: document.getElementById('tipoCliente').value,
+      direccion: document.getElementById('direccion').value.trim()
+    };
+
+    // Aquí normalmente se enviaría "cliente" a un servidor con fetch().
+    console.log('Cliente registrado:', cliente);
+
+    avisoExito.classList.add('visible');
+    form.reset();
+  });
+
+  document.getElementById('btnCancelar').addEventListener('click', function () {
+    form.reset();
+    avisoExito.classList.remove('visible');
+    ['nombre', 'apellido', 'email', 'telefono', 'direccion'].forEach(function (campo) {
+      limpiarError(campo, 'error' + campo.charAt(0).toUpperCase() + campo.slice(1));
+    });
+  });
+</script>
+
+</body>
+</html>
